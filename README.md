@@ -1,4 +1,4 @@
-# terraform-aws-cloudfront-s3-cdn [![Build Status](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-s3-cdn.svg?branch=master)](https://travis-ci.org/cloudposse/terraform-aws-cloudfront-s3-cdn)
+# terraform-aws-cloudfront-s3-cdn-with-whitelist
 
 Terraform module to easily provision an AWS CloudFront CDN with an S3 or custom origin.
 
@@ -7,7 +7,7 @@ Terraform module to easily provision an AWS CloudFront CDN with an S3 or custom 
 
 ```hcl
 module "cdn" {
-  source           = "git::https://github.com/cloudposse/terraform-aws-cloudfront-s3-cdn.git?ref=master"
+  source           = "git::https://github.com/hashiops/terraform-aws-cloudfront-s3-cdn-with-whitelist?ref=master"
   namespace        = "${var.namespace}"
   stage            = "${var.stage}"
   name             = "${var.name}"
