@@ -186,6 +186,10 @@ variable "parent_zone_name" {
   default = ""
 }
 
+variable "whitelist" {
+  type = "list"
+}
+
 variable "null" {
   description = "an empty string"
   default     = ""
