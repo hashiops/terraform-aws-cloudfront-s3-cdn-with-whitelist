@@ -29,3 +29,7 @@ output "s3_bucket" {
 output "s3_bucket_domain_name" {
   value = "${null_resource.default.triggers.bucket_domain_name}"
 }
+
+output "s3_bucket_policy" {
+  value = "${data.template_file.default.rendered}"
+}
