@@ -187,7 +187,12 @@ variable "parent_zone_name" {
 }
 
 variable "whitelist" {
-  type = "list"
+  type    = "list"
+  default = []
+}
+
+variable "trusted_arn" {
+  default = ""
 }
 
 variable "null" {
