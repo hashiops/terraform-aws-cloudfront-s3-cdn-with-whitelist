@@ -101,27 +101,24 @@ resource "null_resource" "default" {
 
 # creation of web ALC #
 resource "aws_waf_ipset" "ipset" {
-  count = "${ length(var.whitelist) == 0 ? 0 : 1 }"
-  name  = "IP_Set"
+  name = "IP_Set"
 
   ip_set_descriptors = "${var.whitelist}"
 }
 
 resource "aws_waf_rule" "wafrule" {
-  count       = "${ length(var.whitelist) == 0 ? 0 : 1 }"
   depends_on  = ["aws_waf_ipset.ipset"]
   name        = "WAFRule"
   metric_name = "WAFRule"
 
   predicates {
-    data_id = "${aws_waf_ipset.ipset.0.id}"
+    data_id = "${aws_waf_ipset.ipset.id}"
     negated = false
     type    = "IPMatch"
   }
 }
 
 resource "aws_waf_web_acl" "waf_acl" {
-  count       = "${ length(var.whitelist) == 0 ? 0 : 1 }"
   depends_on  = ["aws_waf_ipset.ipset", "aws_waf_rule.wafrule"]
   name        = "WebACL"
   metric_name = "WebACL"
@@ -136,7 +133,7 @@ resource "aws_waf_web_acl" "waf_acl" {
     }
 
     priority = 1
-    rule_id  = "${aws_waf_rule.wafrule.0.id}"
+    rule_id  = "${aws_waf_rule.wafrule.id}"
     type     = "REGULAR"
   }
 }
@@ -159,7 +156,7 @@ resource "aws_cloudfront_distribution" "default" {
 
   aliases = ["${var.aliases}"]
 
-  web_acl_id = "${ length(var.whitelist) != 0 ? aws_waf_web_acl.waf_acl.0.id : "" }"
+  web_acl_id = "${aws_waf_web_acl.waf_acl.id}"
 
   origin {
     domain_name = "${null_resource.default.triggers.bucket_domain_name}"
