@@ -109,7 +109,7 @@ resource "aws_waf_ipset" "ipset" {
 resource "aws_waf_rule" "wafrule" {
   depends_on  = ["aws_waf_ipset.ipset"]
   name        = "WAFRule-${var.stage}-${var.name}"
-  metric_name = "WAFRule-${var.stage}-${var.name}"
+  metric_name = "WAFRule${var.stage}${var.name}"
 
   predicates {
     data_id = "${aws_waf_ipset.ipset.id}"
@@ -121,7 +121,7 @@ resource "aws_waf_rule" "wafrule" {
 resource "aws_waf_web_acl" "waf_acl" {
   depends_on  = ["aws_waf_ipset.ipset", "aws_waf_rule.wafrule"]
   name        = "WebACL-${var.stage}-${var.name}"
-  metric_name = "WebACL-${var.stage}-${var.name}"
+  metric_name = "WebACL${var.stage}${var.name}"
 
   default_action {
     type = "BLOCK"
