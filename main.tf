@@ -101,15 +101,15 @@ resource "null_resource" "default" {
 
 # creation of web ALC #
 resource "aws_waf_ipset" "ipset" {
-  name = "IP_Set"
+  name = "IP_Set-${var.stage}-${var.name}"
 
   ip_set_descriptors = "${var.whitelist}"
 }
 
 resource "aws_waf_rule" "wafrule" {
   depends_on  = ["aws_waf_ipset.ipset"]
-  name        = "WAFRule"
-  metric_name = "WAFRule"
+  name        = "WAFRule-${var.stage}-${var.name}"
+  metric_name = "WAFRule-${var.stage}-${var.name}"
 
   predicates {
     data_id = "${aws_waf_ipset.ipset.id}"
@@ -120,8 +120,8 @@ resource "aws_waf_rule" "wafrule" {
 
 resource "aws_waf_web_acl" "waf_acl" {
   depends_on  = ["aws_waf_ipset.ipset", "aws_waf_rule.wafrule"]
-  name        = "WebACL"
-  metric_name = "WebACL"
+  name        = "WebACL-${var.stage}-${var.name}"
+  metric_name = "WebACL-${var.stage}-${var.name}"
 
   default_action {
     type = "BLOCK"
